@@ -4,7 +4,7 @@ import './App.css';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import 'ag-grid-enterprise';
+// import 'ag-grid-enterprise';
 import { v4 as uuidv4 } from 'uuid';
 var moment = require('moment'); 
  
