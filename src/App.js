@@ -3,15 +3,18 @@ import React, { Component } from 'react';
 import './App.css';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-// import 'ag-grid-enterprise';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
+import 'ag-grid-enterprise';
 import { v4 as uuidv4 } from 'uuid';
+import ReactModal from './components/common/ReactModal'
+
 var moment = require('moment'); 
  
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+   
       columnDefs: [
         {
           headerName: 'UID',
@@ -277,10 +280,12 @@ class App extends Component {
     this.gridApi = params.api;
   };
 
+ 
+
   addItems = () => {
     var newItems = [createNewRowData()];
     var res = this.gridApi.applyTransaction({ add: newItems });
-    console.log(res,'additem');
+    console.log(res, 'additem');
   };
 
   onRemoveSelected = () => {
@@ -300,21 +305,36 @@ class App extends Component {
     this.gridApi.setRowData([]);
   };
 
-
-
+  // updateItems = () => {
+  //   var itemsToUpdate = [];
+  //   this.gridApi.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+  //     if (index >= 2) {
+  //       return;
+  //     }
+  //     var data = rowNode.data;
+  //     data.price = Math.floor(Math.random() * 20000 + 20000);
+  //     itemsToUpdate.push(data);
+  //   });
+  //   var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
+  //   console.log(res,'update');
+  // };
 
   render() {
     return (
       <div
-        className='ag-theme-alpine'
+        className='ag-theme-balham-dark'
         style={{
           height: '600px',
           width: '100%'
         }}
       >
         <div className='m-2 d-flex justify-content-center  '>
-          <button type='button' className='btn btn-success mr-2' onClick={this.addItems}>
-            Add
+          <button
+            type='button'
+            className='btn btn-success mr-2'
+            onClick={this.addItems}
+          >
+            Add Quicly
           </button>
           <button
             type='button'
@@ -323,14 +343,22 @@ class App extends Component {
           >
             Remove All
           </button>
+          {/* <button
+            className='btn btn-dark mr-2'
+             onClick={() => this.updateItems()}
+          >
+            Update Top 2
+          </button> */}
+
           <button
             type='button'
-            className='btn btn-danger mr2'
+            className='btn btn-danger mr-2'
             onClick={this.onRemoveSelected}
           >
             Delete
           </button>
         </div>
+
         <AgGridReact
           columnDefs={this.state.columnDefs}
           rowData={this.state.rowData}
@@ -343,6 +371,8 @@ class App extends Component {
           editType={this.state.editType}
           stopEditingWhenGridLosesFocus={true}
         ></AgGridReact>
+
+        <ReactModal />
       </div>
     );
   }
