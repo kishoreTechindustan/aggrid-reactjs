@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import './App.css';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 import 'ag-grid-enterprise';
 import { v4 as uuidv4 } from 'uuid';
-import ReactModal from './components/common/ReactModal'
+import ChildMessageRenderer from './components/common/ChildMessageRenderer'
 
 var moment = require('moment'); 
  
@@ -14,7 +14,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-   
       columnDefs: [
         {
           headerName: 'UID',
@@ -22,84 +21,100 @@ class App extends Component {
           sortable: true,
           filter: true,
           cellRenderer: 'agGroupCellRenderer',
-          editable: false
+          editable: false,
         },
         {
           headerName: 'Product Name',
           field: 'productName',
           sortable: true,
-          filter: true
+          filter: true,
         },
         ,
         {
           headerName: 'Brand',
           field: 'brand',
           sortable: true,
-          filter: true
+          filter: true,
         },
 
         {
           headerName: 'Purchased Date',
           field: 'purchasedDate',
           sortable: true,
-          filter: true
+          filter: true,
         },
 
         {
           headerName: 'Price',
           field: 'price',
           sortable: true,
-          filter: true
+          filter: true,
         },
         {
           headerName: ' Offered Price',
           field: 'offeredPrice',
           sortable: true,
-          filter: true
+          filter: true,
         },
         {
           headerName: 'Expriation Date',
           field: 'expriationDate',
           sortable: true,
-          filter: true
+          filter: true,
         },
         {
           headerName: 'Total Batches',
           field: 'totalBaches',
           sortable: true,
-          filter: true
+          filter: true,
         },
         {
           headerName: 'Quantity',
           field: 'quantity',
           sortable: true,
-          filter: true
+          filter: true,
         },
         {
           headerName: 'Price per unit/gram',
           field: 'ppu',
           sortable: true,
-          filter: true
+          filter: true,
         },
         {
           headerName: 'Unit Size',
           field: 'unitSize',
           sortable: true,
-          filter: true
+          filter: true,
         },
         {
           headerName: 'Unit Type',
           field: 'unitType',
           sortable: true,
-          filter: true
+          filter: true,
         },
+        // {
+        //   headerName: 'Actions',
+        //   field: 'actions',
+        //   sortable: true,
+        //   filter: true,
+        // },
         {
           headerName: 'Actions',
           field: 'actions',
+          cellRenderer: 'childMessageRenderer',
+          colId: 'params',
+          // minWidth: 200,
           sortable: true,
-          filter: true
-        }
+          filter: true,
+          editable: false,
+        },
       ],
+      context: { componentParent: this },
+
+      frameworkComponents: {
+        childMessageRenderer: ChildMessageRenderer,
+      },
+
       rowData: [
         {
           uid: uuidv4(),
@@ -114,7 +129,7 @@ class App extends Component {
           ppu: 1250.5,
           unitSize: '1',
           unitType: 'unit',
-          actions: 'edit/delete',
+          // actions: 'edit/delete',
           batchRecord: [
             {
               brandId: uuidv4(),
@@ -128,11 +143,11 @@ class App extends Component {
                 id: '154654654',
                 name: 'Kishore Kumar',
                 companyName: 'tecHindustan',
-                joined: '<moment date>'
+                joined: '<moment date>',
               },
-              price: 1250.5
-            }
-          ]
+              price: 1250.5,
+            },
+          ],
         },
         {
           uid: uuidv4(),
@@ -147,7 +162,7 @@ class App extends Component {
           ppu: 1250.5,
           unitSize: '1',
           unitType: 'unit',
-          actions: 'edit/delete',
+          // actions: 'edit/delete',
           batchRecord: [
             {
               brandId: uuidv4(),
@@ -161,11 +176,11 @@ class App extends Component {
                 id: '154654654',
                 name: 'Kishore Kumar',
                 companyName: 'tecHindustan',
-                joined: '<moment date>'
+                joined: '<moment date>',
               },
-              price: 1250.5
-            }
-          ]
+              price: 1250.5,
+            },
+          ],
         },
         {
           uid: uuidv4(),
@@ -180,7 +195,7 @@ class App extends Component {
           ppu: 150.5,
           unitSize: '2',
           unitType: 'unit',
-          actions: 'edit/delete',
+          // actions: 'edit/delete',
           batchRecord: [
             {
               brandId: uuidv4(),
@@ -194,11 +209,11 @@ class App extends Component {
                 id: '154654654',
                 name: 'Kishore Kumar',
                 companyName: 'tecHindustan',
-                joined: '<moment date>'
+                joined: '<moment date>',
               },
-              price: 1250.5
-            }
-          ]
+              price: 1250.5,
+            },
+          ],
         },
         {
           uid: uuidv4(),
@@ -213,7 +228,7 @@ class App extends Component {
           ppu: 1250.5,
           unitSize: '4',
           unitType: 'unit',
-          actions: 'edit/delete',
+          // actions: 'edit/delete',
           batchRecord: [
             {
               brandId: uuidv4(),
@@ -227,20 +242,20 @@ class App extends Component {
                 id: '154654654',
                 name: 'Kishore Kumar',
                 companyName: 'tecHindustan',
-                joined: '<moment date>'
+                joined: '<moment date>',
               },
-              price: 1250.5
-            }
-          ]
-        }
+              price: 1250.5,
+            },
+          ],
+        },
       ],
       defaultColDef: {
         flex: 1,
-        minWidth: 100,
+        minWidth: 80,
         filter: true,
         sortable: true,
         resizable: true,
-        editable: true
+        editable: true,
       },
 
       editType: 'fullRow',
@@ -254,38 +269,43 @@ class App extends Component {
             { field: 'created' },
             {
               field: 'expirationDate',
-              minWidth: 150
+              minWidth: 150,
             },
             {
-              field: 'quantity'
+              field: 'quantity',
             },
             {
               field: 'inventory',
-              minWidth: 150
+              minWidth: 150,
             },
             { field: 'unitType' },
             { field: 'vendor' },
-            { field: 'price' }
+            { field: 'price' },
           ],
-          defaultColDef: { flex: 1 }
+          defaultColDef: { flex: 1 },
         },
-        getDetailRowData: function(params) {
+        getDetailRowData: function (params) {
           params.successCallback(params.data.batchRecord);
-        }
-      }
+        },
+      },
     };
   }
 
-  onGridReady = params => {
+  onGridReady = (params) => {
     this.gridApi = params.api;
   };
-
- 
 
   addItems = () => {
     var newItems = [createNewRowData()];
     var res = this.gridApi.applyTransaction({ add: newItems });
     console.log(res, 'additem');
+  };
+
+  addItemsNew = () => {
+    var newItems = [createNewRowData2()];
+    var res = this.gridApi.applyTransaction({ add: newItems });
+  
+
   };
 
   onRemoveSelected = () => {
@@ -305,58 +325,92 @@ class App extends Component {
     this.gridApi.setRowData([]);
   };
 
-  // updateItems = () => {
-  //   var itemsToUpdate = [];
-  //   this.gridApi.forEachNodeAfterFilterAndSort(function(rowNode, index) {
-  //     if (index >= 2) {
-  //       return;
-  //     }
-  //     var data = rowNode.data;
-  //     data.price = Math.floor(Math.random() * 20000 + 20000);
-  //     itemsToUpdate.push(data);
-  //   });
-  //   var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
-  //   console.log(res,'update');
-  // };
+  methodFromParent = (cell) => {
+    var selectedData = this.gridApi.getSelectedRows();
+    var res = this.gridApi.applyTransaction({ remove: selectedData });
+    alert('Parent Component Method from delete  ' + cell + '!');
+  };
+
+  methodFromParent2 = (indx) => {
+    this.gridApi.setFocusedCell(indx, 'uid');
+    this.gridApi.startEditingCell({
+      rowIndex: indx,
+      colKey: 'uid',
+    });
+  };
+
+  methodFromParent3 = () => {
+    var itemsToUpdate = [];
+
+    this.gridApi.forEachNode((rowNode) => {
+      let data = rowNode.data;
+      itemsToUpdate.push(data);
+      var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
+      console.log(res, 'iupppdatee ');
+      this.gridApi.stopEditing();
+    });
+
+    alert('updated !');
+  };
+
+  //   methodFromParent4 = () => {
+  //     var itemsToUpdate = [];
+  //     // this.gridApi.forEachNodeAfterFilterAndSort(function (rowNode, index) {
+  //     //   if (index >= 2) {
+  //     //     return;
+  //     //   }
+  //     //   var data = rowNode.data;
+  //     //   data.price = Math.floor(Math.random() * 20000 + 20000);
+  //     //   itemsToUpdate.push(data);
+  //     // });
+  //     // var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
+  // this.gridApi.forEachNode( (d)=>console.log(d,'d') );
+  //   };
 
   render() {
     return (
       <div
-        className='ag-theme-balham-dark'
+        className='ag-theme-alpine-dark'
         style={{
           height: '600px',
-          width: '100%'
+          width: '100%',
         }}
       >
-        <div className='m-2 d-flex justify-content-center  '>
-          <button
-            type='button'
-            className='btn btn-success mr-2'
-            onClick={this.addItems}
-          >
-            Add Quicly
-          </button>
-          <button
-            type='button'
-            className='btn btn-primary mr-2'
-            onClick={this.clearData}
-          >
-            Remove All
-          </button>
-          {/* <button
-            className='btn btn-dark mr-2'
-             onClick={() => this.updateItems()}
-          >
-            Update Top 2
-          </button> */}
+        <div className=' d-flex justify-content-between pt-4'>
+          <div className='title-left'>
+            <h1 className='text-dark'> Records</h1>
+          </div>
+          <div className='title-right '>
+            <button
+              type='button'
+              className='btn btn-success mr-2'
+              onClick={this.addItems}
+            >
+              Add Quicly
+            </button>
+            <button
+              type='button'
+              className='btn btn-dark mr-2'
+              onClick={this.addItemsNew}
+            >
+              Add New
+            </button>
+            <button
+              type='button'
+              className='btn btn-primary mr-2'
+              onClick={this.clearData}
+            >
+              Remove All
+            </button>
 
-          <button
-            type='button'
-            className='btn btn-danger mr-2'
-            onClick={this.onRemoveSelected}
-          >
-            Delete
-          </button>
+            <button
+              type='button'
+              className='btn btn-danger mr-2'
+              onClick={this.onRemoveSelected}
+            >
+              Delete
+            </button>
+          </div>
         </div>
 
         <AgGridReact
@@ -369,10 +423,10 @@ class App extends Component {
           // onFirstDataRendered={this.onFirstDataRendered.bind(this)}
           rowSelection={this.state.rowSelection}
           editType={this.state.editType}
-          stopEditingWhenGridLosesFocus={true}
+          // stopEditingWhenGridLosesFocus={true}
+          frameworkComponents={this.state.frameworkComponents}
+          context={this.state.context}
         ></AgGridReact>
-
-        <ReactModal />
       </div>
     );
   }
@@ -392,7 +446,7 @@ class App extends Component {
       ppu: 1250.5,
       unitSize: '1',
       unitType: 'unit',
-      actions: 'edit/delete',
+      // actions: 'edit/delete',
       batchRecord: [
         {
           brandId: uuidv4(),
@@ -414,5 +468,45 @@ class App extends Component {
     };
     return newData;
   }
+
+
+
+  function createNewRowData2() {
+    var newData = {
+      uid: uuidv4(),
+      productName: '',
+      brand: '',
+      purchasedDate: '',
+      price: '',
+      offeredPrice: '',
+      expriationDate: '',
+      totalBaches: '',
+      quantity: '',
+      ppu: '',
+      unitSize: '',
+      unitType: '',
+      // actions: 'edit/delete',
+      batchRecord: [
+        {
+          brandId: uuidv4(),
+          created: '',
+
+          expirationDate: '',
+          quantity: '',
+          inventory: '',
+          unitType: '',
+          vendor: {
+            id: '',
+            name: '',
+            companyName: '',
+            joined: '',
+          },
+          price: '',
+        },
+      ],
+    };
+    return newData;
+  }
+
 
 export default App;
