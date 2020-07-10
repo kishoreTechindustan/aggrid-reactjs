@@ -21,6 +21,7 @@ export default class ChildMessageRenderer extends Component {
 
                  onBtStartEditing = () => {
                    this.setState({ toggle: true });
+                   console.log(this.props,'edit but')
                    this.props.context.componentParent.methodFromParent2(
                      this.props.node.rowIndex
                    );
@@ -70,13 +71,13 @@ export default class ChildMessageRenderer extends Component {
                          </button>
                        )}
 
-                       <button
+                    { !this.state.toggle &&  <button
                          //   style={{ height: 20, lineHeight: 0.5 }}
                          onClick={this.deleteButton}
                          className='btn btn-danger ml-1 '
                        >
                          <i className='fa fa-trash' aria-hidden='true'></i>
-                       </button>
+                       </button>}
                      </span>
                    );
                  }

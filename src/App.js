@@ -3,13 +3,19 @@ import React, { Component } from 'react';
 import './App.css';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import { v4 as uuidv4 } from 'uuid';
 import ChildMessageRenderer from './components/common/ChildMessageRenderer'
-
+// import CustomBrandCellRenderer from './components/common/CustomBrandCellRenderer'
 var moment = require('moment'); 
  
+var perUnitMappings = {
+  unit: 'unit',
+  gram: 'gram',
+ 
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -91,6 +97,19 @@ class App extends Component {
           field: 'unitType',
           sortable: true,
           filter: true,
+          cellEditor: 'select',
+          cellEditorParams: { values: extractValues(perUnitMappings) },
+          filterParams: {
+            valueFormatter: function (params) {
+              return lookupValue(perUnitMappings, params.value);
+            },
+          },
+          valueFormatter: function (params) {
+            return lookupValue(perUnitMappings, params.value);
+          },
+          valueParser: function (params) {
+            return lookupKey(perUnitMappings, params.newValue);
+          },
         },
         // {
         //   headerName: 'Actions',
@@ -108,11 +127,18 @@ class App extends Component {
           filter: true,
           editable: false,
         },
+        // {
+        //   field: 'calls',
+        //   cellRenderer: 'CustomBrandCellRenderer',
+        // },
       ],
       context: { componentParent: this },
-
+      getRowNodeId: function (data) {
+        return data.uid;
+      },
       frameworkComponents: {
         childMessageRenderer: ChildMessageRenderer,
+        // CustomBrandCellRenderer: CustomBrandCellRenderer,
       },
 
       rowData: [
@@ -194,7 +220,7 @@ class App extends Component {
           quantity: '2500',
           ppu: 150.5,
           unitSize: '2',
-          unitType: 'unit',
+          unitType: 'gram',
           // actions: 'edit/delete',
           batchRecord: [
             {
@@ -227,7 +253,7 @@ class App extends Component {
           quantity: '3800',
           ppu: 1250.5,
           unitSize: '4',
-          unitType: 'unit',
+          unitType: 'gram',
           // actions: 'edit/delete',
           batchRecord: [
             {
@@ -264,12 +290,18 @@ class App extends Component {
 
       detailCellRendererParams: {
         detailGridOptions: {
+          // frameworkComponents: {
+          //   childMessageRenderer: ChildMessageRenderer,
+          // },
+          // context: { componentParent: this },
+
           columnDefs: [
-            { field: 'brandId' },
+            { field: 'brandId', editable: false },
             { field: 'created' },
             {
               field: 'expirationDate',
               minWidth: 150,
+              cellEditor: 'datePicker',
             },
             {
               field: 'quantity',
@@ -278,12 +310,34 @@ class App extends Component {
               field: 'inventory',
               minWidth: 150,
             },
-            { field: 'unitType' },
+            {
+              field: 'unitType',
+              cellEditor: 'select',
+              cellEditorParams: { values: extractValues(perUnitMappings) },
+              filterParams: {
+                valueFormatter: function (params) {
+                  return lookupValue(perUnitMappings, params.value);
+                },
+              },
+              valueFormatter: function (params) {
+                return lookupValue(perUnitMappings, params.value);
+              },
+              valueParser: function (params) {
+                return lookupKey(perUnitMappings, params.newValue);
+              },
+            },
+
             { field: 'vendor' },
             { field: 'price' },
+            // {
+            //   field: 'actions',
+            //   cellRenderer: 'childMessageRenderer',
+            //   colId: 'params',
+            // },
           ],
-          defaultColDef: { flex: 1 },
+          defaultColDef: { flex: 1, editable: true },
         },
+
         getDetailRowData: function (params) {
           params.successCallback(params.data.batchRecord);
         },
@@ -317,8 +371,8 @@ class App extends Component {
     // this.setState({ rowData: newRowData });
 
     var selectedData = this.gridApi.getSelectedRows();
+    console.log(selectedData, 'res dddelete');
     var res = this.gridApi.applyTransaction({ remove: selectedData });
-    console.log(res, 'res delete');
   };
 
   clearData = () => {
@@ -370,7 +424,7 @@ class App extends Component {
   render() {
     return (
       <div
-        className='ag-theme-alpine-dark'
+        className='ag-theme-alpine'
         style={{
           height: '600px',
           width: '100%',
@@ -426,6 +480,7 @@ class App extends Component {
           // stopEditingWhenGridLosesFocus={true}
           frameworkComponents={this.state.frameworkComponents}
           context={this.state.context}
+          getRowNodeId={this.state.getRowNodeId}
         ></AgGridReact>
       </div>
     );
@@ -508,5 +563,24 @@ class App extends Component {
     return newData;
   }
 
+  function extractValues(mappings) {
+    return Object.keys(mappings);
+  }
+  function lookupValue(mappings, key) {
+    return mappings[key];
+  }
 
+  function lookupKey(mappings, name) {
+    var keys = Object.keys(mappings);
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      if (mappings[key] === name) {
+        return key;
+      }
+    }
+  }
+
+
+
+  
 export default App;
