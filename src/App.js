@@ -7,6 +7,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 import { v4 as uuidv4 } from 'uuid';
 import ChildMessageRenderer from './components/common/ChildMessageRenderer'
+import BrandCellRenderer from './components/common/BrandCellRenderer';
 // import CustomBrandCellRenderer from './components/common/CustomBrandCellRenderer'
 var moment = require('moment'); 
  
@@ -20,6 +21,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isRowMaster: function (dataItem) {
+        return dataItem ? dataItem.batchRecord.length > 0 : false;
+      },
       columnDefs: [
         {
           headerName: 'UID',
@@ -127,10 +131,11 @@ class App extends Component {
           filter: true,
           editable: false,
         },
-        // {
-        //   field: 'calls',
-        //   cellRenderer: 'CustomBrandCellRenderer',
-        // },
+        {
+          field: 'BrandActions',
+          minWidth: 150,
+          cellRenderer: 'BrandCellRenderer',
+        },
       ],
       context: { componentParent: this },
       getRowNodeId: function (data) {
@@ -138,7 +143,7 @@ class App extends Component {
       },
       frameworkComponents: {
         childMessageRenderer: ChildMessageRenderer,
-        // CustomBrandCellRenderer: CustomBrandCellRenderer,
+        BrandCellRenderer: BrandCellRenderer,
       },
 
       rowData: [
@@ -165,6 +170,22 @@ class App extends Component {
               quantity: 45,
               inventory: 'Safe',
               unitType: 'unit',
+              vendor: {
+                id: '154654654',
+                name: 'Kishore Kumar',
+                companyName: 'tecHindustan',
+                joined: '<moment date>',
+              },
+              price: 1250.5,
+            },
+            {
+              brandId: uuidv4(),
+              created: moment('2018-06-03').format('MM/DD/YYYY'),
+
+              expirationDate: moment('2020-08-01').format('MM/DD/YYYY'),
+              quantity: 35,
+              inventory: 'Safe',
+              unitType: 'gram',
               vendor: {
                 id: '154654654',
                 name: 'Kishore Kumar',
@@ -256,25 +277,25 @@ class App extends Component {
           unitType: 'gram',
           // actions: 'edit/delete',
           batchRecord: [
-            {
-              brandId: uuidv4(),
-              created: moment('2018-06-03').format('MM/DD/YYYY'),
-
-              expirationDate: moment('2020-02-04').format('MM/DD/YYYY'),
-              quantity: 45,
-              inventory: 'Safe',
-              unitType: 'unit',
-              vendor: {
-                id: '154654654',
-                name: 'Kishore Kumar',
-                companyName: 'tecHindustan',
-                joined: '<moment date>',
-              },
-              price: 1250.5,
-            },
+            // {
+            //   brandId: uuidv4(),
+            //   created: moment('2018-06-03').format('MM/DD/YYYY'),
+            //   expirationDate: moment('2020-02-04').format('MM/DD/YYYY'),
+            //   quantity: 45,
+            //   inventory: 'Safe',
+            //   unitType: 'unit',
+            //   vendor: {
+            //     id: '154654654',
+            //     name: 'Kishore Kumar',
+            //     companyName: 'tecHindustan',
+            //     joined: '<moment date>',
+            //   },
+            //   price: 1250.5,
+            // },
           ],
         },
       ],
+
       defaultColDef: {
         flex: 1,
         minWidth: 80,
@@ -301,7 +322,7 @@ class App extends Component {
             {
               field: 'expirationDate',
               minWidth: 150,
-              cellEditor: 'datePicker',
+
             },
             {
               field: 'quantity',
@@ -481,6 +502,7 @@ class App extends Component {
           frameworkComponents={this.state.frameworkComponents}
           context={this.state.context}
           getRowNodeId={this.state.getRowNodeId}
+          isRowMaster={this.state.isRowMaster}
         ></AgGridReact>
       </div>
     );

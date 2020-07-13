@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class CustomBrandCellRenderer extends Component {
+export default class CustomLoadingCellRenderer extends Component {
   constructor(props) {
     super(props);
 
