@@ -31,7 +31,10 @@ class App extends Component {
           sortable: true,
           filter: true,
           cellRenderer: 'agGroupCellRenderer',
+          //cellRendererParams: { checkbox: true },
+
           editable: false,
+          //checkboxSelection: true,
         },
         {
           headerName: 'Product Name',
@@ -135,6 +138,7 @@ class App extends Component {
           field: 'BrandActions',
           minWidth: 150,
           cellRenderer: 'BrandCellRenderer',
+          editable: false,
         },
       ],
       context: { componentParent: this },
@@ -276,23 +280,7 @@ class App extends Component {
           unitSize: '4',
           unitType: 'gram',
           // actions: 'edit/delete',
-          batchRecord: [
-            // {
-            //   brandId: uuidv4(),
-            //   created: moment('2018-06-03').format('MM/DD/YYYY'),
-            //   expirationDate: moment('2020-02-04').format('MM/DD/YYYY'),
-            //   quantity: 45,
-            //   inventory: 'Safe',
-            //   unitType: 'unit',
-            //   vendor: {
-            //     id: '154654654',
-            //     name: 'Kishore Kumar',
-            //     companyName: 'tecHindustan',
-            //     joined: '<moment date>',
-            //   },
-            //   price: 1250.5,
-            // },
-          ],
+          batchRecord: [],
         },
       ],
 
@@ -311,18 +299,20 @@ class App extends Component {
 
       detailCellRendererParams: {
         detailGridOptions: {
-          // frameworkComponents: {
-          //   childMessageRenderer: ChildMessageRenderer,
-          // },
+          frameworkComponents: {
+            // BrandCellRenderer: BrandCellRenderer,
+          },
           // context: { componentParent: this },
 
           columnDefs: [
-            { field: 'brandId', editable: false },
+            {
+              field: 'brandId',
+              editable: false,
+            },
             { field: 'created' },
             {
               field: 'expirationDate',
               minWidth: 150,
-
             },
             {
               field: 'quantity',
@@ -348,18 +338,25 @@ class App extends Component {
               },
             },
 
-            { field: 'vendor' },
+            {
+              field: 'vendor',
+              valueFormatter: vendorFormatter,
+              resizable: true,
+            },
+
             { field: 'price' },
+
             // {
             //   field: 'actions',
             //   cellRenderer: 'childMessageRenderer',
             //   colId: 'params',
             // },
           ],
-          defaultColDef: { flex: 1, editable: true },
+          defaultColDef: { flex: 1, editable: true, minWidth: 150 },
         },
 
         getDetailRowData: function (params) {
+          console.log(params.data.batchRecord, 'params.data.batchRecord');
           params.successCallback(params.data.batchRecord);
         },
       },
@@ -379,8 +376,6 @@ class App extends Component {
   addItemsNew = () => {
     var newItems = [createNewRowData2()];
     var res = this.gridApi.applyTransaction({ add: newItems });
-  
-
   };
 
   onRemoveSelected = () => {
@@ -414,6 +409,8 @@ class App extends Component {
     });
   };
 
+
+
   methodFromParent3 = () => {
     var itemsToUpdate = [];
 
@@ -421,7 +418,6 @@ class App extends Component {
       let data = rowNode.data;
       itemsToUpdate.push(data);
       var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
-      console.log(res, 'iupppdatee ');
       this.gridApi.stopEditing();
     });
 
@@ -503,6 +499,8 @@ class App extends Component {
           context={this.state.context}
           getRowNodeId={this.state.getRowNodeId}
           isRowMaster={this.state.isRowMaster}
+          autoGroupColumnDef={this.state.autoGroupColumnDef}
+          groupSelectsChildren={true}
         ></AgGridReact>
       </div>
     );
@@ -602,6 +600,15 @@ class App extends Component {
     }
   }
 
+
+function vendorFormatter(params) {
+  console.log(params, 'ppppppp');
+  return ` id:${params.value.id}
+ name:${params.value.name}
+ companyName:${params.value.companyName}
+joined:${params.value.joined}
+ `;
+}
 
 
   
