@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from "uuid";
 import ChildMessageRenderer from "./components/common/ChildMessageRenderer";
 import BrandCellRenderer from "./components/common/BrandCellRenderer";
 import BrandCellRenderer2 from "./components/common/BrandCellRenderer2";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import CustomTooltip from './components/common/CustomTooltip'
 // import CustomBrandCellRenderer from './components/common/CustomBrandCellRenderer'
 var moment = require("moment");
@@ -50,7 +52,7 @@ class App extends Component {
 
             if (data.productName !== changedVal) {
               if(!changedVal){
-                alert('not empty')
+                toast.error('Product Name Cant Empty')
                 return  false
               }
              data.productName= changedVal
@@ -574,6 +576,7 @@ class App extends Component {
           // treeData={true}
           // animateRows={true}
         ></AgGridReact>
+        <ToastContainer />
       </div>
     );
   }
