@@ -7,7 +7,7 @@ import "ag-grid-enterprise";
 import { v4 as uuidv4 } from "uuid";
 import ChildMessageRenderer from "./components/common/ChildMessageRenderer";
 import BrandCellRenderer from "./components/common/BrandCellRenderer";
-import BrandCellRenderer2 from './components/common/BrandCellRenderer2'
+import BrandCellRenderer2 from "./components/common/BrandCellRenderer2";
 //import CustomTooltip from './components/common/CustomTooltip'
 // import CustomBrandCellRenderer from './components/common/CustomBrandCellRenderer'
 var moment = require("moment");
@@ -41,7 +41,25 @@ class App extends Component {
           field: "productName",
           sortable: true,
           filter: true,
-          tooltipField: 'productName',
+          valueGetter: function (params) {
+            return params.data.productName;
+          },
+          valueSetter: function (params) {
+            let data = params.data;
+            let changedVal=params.newValue
+
+            if (data.productName !== changedVal) {
+              if(!changedVal){
+                alert('not empty')
+                return  false
+              }
+             data.productName= changedVal
+             return true
+            }else {
+              return false
+            }
+          },
+          // tooltipField: "productName",
         },
         ,
         {
@@ -142,14 +160,14 @@ class App extends Component {
           editable: false,
         },
       ],
-  
+
       context: { componentParent: this },
       getRowNodeId: function (data) {
         return data.uid;
       },
       frameworkComponents: {
         childMessageRenderer: ChildMessageRenderer,
-         BrandCellRenderer: BrandCellRenderer,
+        BrandCellRenderer: BrandCellRenderer,
       },
 
       rowData: [
@@ -171,7 +189,6 @@ class App extends Component {
             {
               brandId: uuidv4(),
               created: moment("2018-06-03").format("MM/DD/YYYY"),
-
               expirationDate: moment("2020-08-01").format("MM/DD/YYYY"),
               quantity: 45,
               inventory: "Safe",
@@ -187,7 +204,6 @@ class App extends Component {
             {
               brandId: uuidv4(),
               created: moment("2018-06-03").format("MM/DD/YYYY"),
-
               expirationDate: moment("2020-08-01").format("MM/DD/YYYY"),
               quantity: 35,
               inventory: "Safe",
@@ -220,7 +236,6 @@ class App extends Component {
             {
               brandId: uuidv4(),
               created: moment("2019-06-03").format("MM/DD/YYYY"),
-
               expirationDate: moment("2021-06-03").format("MM/DD/YYYY"),
               quantity: 45,
               inventory: "Safe",
@@ -253,7 +268,6 @@ class App extends Component {
             {
               brandId: uuidv4(),
               created: moment("2020-06-03").format("MM/DD/YYYY"),
-
               expirationDate: moment("2022-06-03").format("MM/DD/YYYY"),
               quantity: 45,
               inventory: "Safe",
@@ -292,9 +306,8 @@ class App extends Component {
         filter: true,
         sortable: true,
         resizable: true,
-         editable: true,
-         tooltipComponent: 'customTooltip',
-
+        editable: true,
+        tooltipComponent: "customTooltip",
       },
 
       editType: "fullRow",
@@ -306,7 +319,7 @@ class App extends Component {
           frameworkComponents: {
             BrandCellRenderer2: BrandCellRenderer2,
           },
-           context: { componentParent: this },
+          context: { componentParent: this },
 
           columnDefs: [
             {
@@ -344,7 +357,7 @@ class App extends Component {
 
             {
               field: "vendor",
-              valueFormatter: (({ value }) => value && value.companyName || ''),
+              valueFormatter: ({ value }) => (value && value.companyName) || "",
               resizable: true,
             },
 
@@ -357,14 +370,14 @@ class App extends Component {
             },
           ],
 
-      editType: "fullRow",
+          editType: "fullRow",
 
-      rowSelection: "single",
-          defaultColDef: { flex: 1, editable: true, minWidth: 150, },
+          rowSelection: "single",
+          defaultColDef: { flex: 1, editable: true, minWidth: 150 },
         },
 
         getDetailRowData: function (params) {
-         // console.log(params.data.batchRecord, "params.data.batchRecord");
+          // console.log(params.data.batchRecord, "params.data.batchRecord");
           params.successCallback(params.data.batchRecord);
         },
       },
@@ -378,13 +391,11 @@ class App extends Component {
   addItems = () => {
     var newItems = [createNewRowData()];
     var res = this.gridApi.applyTransaction({ add: newItems });
-    
   };
 
   addItemsNew = () => {
     var newItems = [createNewRowData2()];
     var res = this.gridApi.applyTransaction({ add: newItems });
-
   };
 
   onRemoveSelected = () => {
@@ -396,7 +407,7 @@ class App extends Component {
     // this.setState({ rowData: newRowData });
 
     var selectedData = this.gridApi.getSelectedRows();
-   // console.log(selectedData, "res dddelete");
+    // console.log(selectedData, "res dddelete");
     var res = this.gridApi.applyTransaction({ remove: selectedData });
   };
 
@@ -420,6 +431,14 @@ class App extends Component {
 
   methodFromParent3 = () => {
     var itemsToUpdate = [];
+    // let data = this.gridApi.getSelectedRows();
+    //   if(!data[0].brand) {
+    //     alert('empty bran')
+    //     return
+    //   }
+    // let res = this.gridApi.applyTransaction({ update: data });
+    // this.gridApi.stopEditing();
+    // console.log(res, "upsdate srees");
 
     this.gridApi.forEachNode((rowNode) => {
       let data = rowNode.data;
@@ -427,8 +446,8 @@ class App extends Component {
       var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
       this.gridApi.stopEditing();
     });
-
-    alert("updated !");
+    //  console.log(itemsToUpdate,'itemsss')
+    //"d02effa9-ce66-4b1e-a388-0b30fa9910ef"
   };
 
   methodFromParent4 = (id) => {
@@ -437,48 +456,42 @@ class App extends Component {
       return;
     }
     var selectedRow = selectedRows[0];
-    let oldData= selectedRow.data
-       let  newData =oldData.batchRecord
-       if(!newData || newData.length===0){
-         return;
-       }
-       let newBatchRecord =newData.filter(brand=>brand.brandId !==id)
-      // console.log(newBatchRecord,'newBatch re')
-       var finalData = {
-        uid: oldData.uid,
-        productName: oldData.productName,
-        brand: oldData.brand,
-        purchasedDate: oldData.purchasedDate,
-        price: oldData.price,
-        offeredPrice: oldData.offeredPrice,
-        expriationDate: oldData.expriationDate,
-        totalBaches: oldData.totalBaches,
-        quantity: oldData.quantity,
-        ppu: oldData.ppu,
-        unitSize: oldData.unitSize,
-        unitType: oldData.unitType,
-        batchRecord: newBatchRecord,
-      };
-     let res= this.gridApi.applyTransaction({
-        update: [finalData],
-      });
-       console.log(newData,'newData')
-       console.log(oldData,'oldData')
-       console.log(res,'res deleted')
+    let oldData = selectedRow.data;
+    let newData = oldData.batchRecord;
+    if (!newData || newData.length === 0) {
+      return;
+    }
+    let newBatchRecord = newData.filter((brand) => brand.brandId !== id);
+    // console.log(newBatchRecord,'newBatch re')
+    var finalData = {
+      uid: oldData.uid,
+      productName: oldData.productName,
+      brand: oldData.brand,
+      purchasedDate: oldData.purchasedDate,
+      price: oldData.price,
+      offeredPrice: oldData.offeredPrice,
+      expriationDate: oldData.expriationDate,
+      totalBaches: oldData.totalBaches,
+      quantity: oldData.quantity,
+      ppu: oldData.ppu,
+      unitSize: oldData.unitSize,
+      unitType: oldData.unitType,
+      batchRecord: newBatchRecord,
+    };
+    let res = this.gridApi.applyTransaction({
+      update: [finalData],
+    });
 
     // this.gridApi.forEachNode(node=>console.log(node,'nodee'))
-  //   var selectedRows = this.gridApi.getSelectedRows();
-  // //  var res = this.props.api.applyTransaction({ remove: selectedData });
-  //      let newArr= selectedRows && selectedRows.length>0 && selectedRows.map(data=>{
-  //         data.batchRecord.filter(brand=> console.log(brand.brandId ===id,'b'))
-  //       })
-  //   console.log(selectedRows.length>0 && selectedRows,'selected row')
-  //   console.log(this.gridApi,'newArr id inside metehond')
-
-   
+    //   var selectedRows = this.gridApi.getSelectedRows();
+    // //  var res = this.props.api.applyTransaction({ remove: selectedData });
+    //      let newArr= selectedRows && selectedRows.length>0 && selectedRows.map(data=>{
+    //         data.batchRecord.filter(brand=> console.log(brand.brandId ===id,'b'))
+    //       })
+    //   console.log(selectedRows.length>0 && selectedRows,'selected row')
+    //   console.log(this.gridApi,'newArr id inside metehond')
   };
 
-  
   //   methodFromParent4 = () => {
   //     var itemsToUpdate = [];
   //     // this.gridApi.forEachNodeAfterFilterAndSort(function (rowNode, index) {
@@ -560,8 +573,6 @@ class App extends Component {
           // stopEditingWhenGridLosesFocus={true}
           // treeData={true}
           // animateRows={true}
-
-
         ></AgGridReact>
       </div>
     );
