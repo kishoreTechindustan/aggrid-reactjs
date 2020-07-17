@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-export default class CustomLoadingCellRenderer extends Component {
+export default class CustomBrandCellRenderer extends Component {
   constructor(props) {
     super(props);
 
@@ -25,12 +25,12 @@ export default class CustomLoadingCellRenderer extends Component {
 
     var newCallRecords = oldCallRecords.slice(0); // make a copy
     newCallRecords.push({
-      name: ['Bob', 'Paul', 'David', 'John'][Math.floor(Math.random() * 4)],
+      name: ["Bob", "Paul", "David", "John"][Math.floor(Math.random() * 4)],
       callId: Math.floor(Math.random() * 1000),
       duration: Math.floor(Math.random() * 100) + 1,
-      switchCode: 'SW5',
-      direction: 'Out',
-      number: '(02) ' + Math.floor(Math.random() * 1000000),
+      switchCode: "SW5",
+      direction: "Out",
+      number: "(02) " + Math.floor(Math.random() * 1000000),
     }); // add one item
 
     var minutes = 0;
@@ -77,7 +77,7 @@ export default class CustomLoadingCellRenderer extends Component {
 
   render() {
     return (
-      <div className='calls-cell-renderer'>
+      <div className='brand-renderer'>
         <button onClick={this.onAdd.bind(this)}>+</button>
         <button onClick={this.onRemove.bind(this)}>-</button>
         <span>{this.state.value}</span>

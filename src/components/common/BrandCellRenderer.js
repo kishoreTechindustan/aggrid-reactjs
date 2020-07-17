@@ -1,121 +1,114 @@
-import React, { Component } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-var moment = require('moment');
+import React, { Component } from "react";
+import { v4 as uuidv4 } from "uuid";
+var moment = require("moment");
 
 export default class BrandCellRenderer extends Component {
-                 constructor(props) {
-                   super(props);
+  constructor(props) {
+    super(props);
 
-                   this.state = {
-                     value: props.value,
-                   };
 
-                   this.props = props;
-                 }
 
-                 refresh(props) {
-                   this.setState({
-                     value: props.value,
-                   });
-                   return true;
-                 }
+    this.props = props;
+  }
 
-                 onAdd() {
-                   var oldData = this.props.node.data;
+  // refresh(props) {
+  //   this.setState({
+  //     value: props.value,
+  //   });
+  //   return true;
+  // }
 
-                   var oldBatchRecord = oldData.batchRecord;
+  onAdd() {
+    var oldData = this.props.node.data;
 
-                   var newBatchRecord = oldBatchRecord.slice(0);
-                   newBatchRecord.push({
-                     brandId: uuidv4(),
-                     created: '',
+    var oldBatchRecord = oldData.batchRecord;
 
-                     expirationDate: '',
-                     quantity: '',
-                     inventory: '',
-                     unitType: '',
-                     vendor: {
-                       id: '',
-                       name: '',
-                       companyName: '',
-                       joined: '',
-                     },
-                     price: '',
-                   });
+    var newBatchRecord = oldBatchRecord.slice(0);
+    newBatchRecord.push({
+      brandId: uuidv4(),
+      created: "",
 
-                   var newData = {
-                     uid: oldData.uid,
-                     productName: oldData.productName,
-                     brand: oldData.brand,
-                     purchasedDate: oldData.purchasedDate,
-                     price: oldData.price,
-                     offeredPrice: oldData.offeredPrice,
-                     expriationDate: oldData.expirationDate,
-                     totalBaches: oldData.totalBaches,
-                     quantity: oldData.quantity,
-                     ppu: oldData.ppu,
-                     unitSize: oldData.unitSize,
-                     unitType: oldData.unitType,
-                     batchRecord: newBatchRecord,
-                   };
-                   this.props.api.applyTransaction({
-                     update: [newData],
-                   });
-              this.props.node.setExpanded(true);
+      expirationDate: "",
+      quantity: "",
+      inventory: "",
+      unitType: "",
+      vendor: {
+        id: "",
+        name: "",
+        companyName: "",
+        joined: "",
+      },
+      price: "",
+    });
 
-                   alert('add');
-                 }
-                
-                 onRemove() {
+    var newData = {
+      uid: oldData.uid,
+      productName: oldData.productName,
+      brand: oldData.brand,
+      purchasedDate: oldData.purchasedDate,
+      price: oldData.price,
+      offeredPrice: oldData.offeredPrice,
+      expriationDate: oldData.expriationDate,
+      totalBaches: oldData.totalBaches,
+      quantity: oldData.quantity,
+      ppu: oldData.ppu,
+      unitSize: oldData.unitSize,
+      unitType: oldData.unitType,
+      batchRecord: newBatchRecord,
+    };
+    this.props.api.applyTransaction({
+      update: [newData],
+    });
+    this.props.node.setExpanded(true);
 
-                   var oldData = this.props.node.data;
-                    
+    alert("add");
+  }
 
-                   var oldBatchRecord = oldData.batchRecord;
+  // onRemove() {
+  //   var oldData = this.props.node.data;
 
-                   if (oldBatchRecord.length == 0) {
-                     return;
-                   }
-                   var newBatchRecord = oldBatchRecord.slice(0);
-                   newBatchRecord.pop();
-                   var newData = {
-                     uid: oldData.uid,
-                     productName: oldData.productName,
-                     brand: oldData.brand,
-                     purchasedDate: oldData.purchasedDate,
-                     price: oldData.price,
-                     offeredPrice: oldData.offeredPrice,
-                     expriationDate: oldData.expirationDate,
-                     totalBaches: oldData.totalBaches,
-                     quantity: oldData.quantity,
-                     ppu: oldData.ppu,
-                     unitSize: oldData.unitSize,
-                     unitType: oldData.unitType,
-                     batchRecord: newBatchRecord,
-                   };
-                   this.props.api.applyTransaction({
-                     update: [newData],
-                   });
-                   alert('remove');
-                 }
+  //   var oldBatchRecord = oldData.batchRecord;
 
-                 render() {
-                   return (
-                     <div className='calls-cell-renderer'>
-                       <button
-                         className='btn btn-success '
-                         onClick={this.onAdd.bind(this)}
-                       >
-                         +
-                       </button>
-                       <button
-                         className='btn btn-danger ml-2 '
-                         onClick={this.onRemove.bind(this)}
-                       >
-                         -
-                       </button>
-                       <span>{this.state.value}</span>
-                     </div>
-                   );
-                 }
-               }
+  //   if (oldBatchRecord.length == 0) {
+  //     return;
+  //   }
+  //   var newBatchRecord = oldBatchRecord.slice(0);
+  //   newBatchRecord.pop();
+  //   var newData = {
+  //     uid: oldData.uid,
+  //     productName: oldData.productName,
+  //     brand: oldData.brand,
+  //     purchasedDate: oldData.purchasedDate,
+  //     price: oldData.price,
+  //     offeredPrice: oldData.offeredPrice,
+  //     expriationDate: oldData.expirationDate,
+  //     totalBaches: oldData.totalBaches,
+  //     quantity: oldData.quantity,
+  //     ppu: oldData.ppu,
+  //     unitSize: oldData.unitSize,
+  //     unitType: oldData.unitType,
+  //     batchRecord: newBatchRecord,
+  //   };
+  //   this.props.api.applyTransaction({
+  //     update: [newData],
+  //   });
+  //   alert("remove");
+  // }
+
+
+  render() {
+    return (
+      <div className='brand-renderer'>
+        <button className='btn btn-success ' onClick={this.onAdd.bind(this)}>
+          +
+        </button>
+        {/* <button
+          className='btn btn-danger ml-2 '
+          onClick={this.onRemove.bind(this)}
+        >
+          -
+        </button> */}
+      </div>
+    );
+  }
+}

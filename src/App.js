@@ -1,20 +1,20 @@
-
-import React, { Component } from 'react';
-import './App.css';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import 'ag-grid-enterprise';
-import { v4 as uuidv4 } from 'uuid';
-import ChildMessageRenderer from './components/common/ChildMessageRenderer'
-import BrandCellRenderer from './components/common/BrandCellRenderer';
+import React, { Component } from "react";
+import "./App.css";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import "ag-grid-enterprise";
+import { v4 as uuidv4 } from "uuid";
+import ChildMessageRenderer from "./components/common/ChildMessageRenderer";
+import BrandCellRenderer from "./components/common/BrandCellRenderer";
+import BrandCellRenderer2 from './components/common/BrandCellRenderer2'
+//import CustomTooltip from './components/common/CustomTooltip'
 // import CustomBrandCellRenderer from './components/common/CustomBrandCellRenderer'
-var moment = require('moment'); 
- 
+var moment = require("moment");
+
 var perUnitMappings = {
-  unit: 'unit',
-  gram: 'gram',
- 
+  unit: "unit",
+  gram: "gram",
 };
 
 class App extends Component {
@@ -26,85 +26,86 @@ class App extends Component {
       },
       columnDefs: [
         {
-          headerName: 'UID',
-          field: 'uid',
+          headerName: "UID",
+          field: "uid",
           sortable: true,
           filter: true,
-          cellRenderer: 'agGroupCellRenderer',
+          cellRenderer: "agGroupCellRenderer",
           //cellRendererParams: { checkbox: true },
 
           editable: false,
           //checkboxSelection: true,
         },
         {
-          headerName: 'Product Name',
-          field: 'productName',
+          headerName: "Product Name",
+          field: "productName",
           sortable: true,
           filter: true,
+          tooltipField: 'productName',
         },
         ,
         {
-          headerName: 'Brand',
-          field: 'brand',
+          headerName: "Brand",
+          field: "brand",
           sortable: true,
           filter: true,
         },
 
         {
-          headerName: 'Purchased Date',
-          field: 'purchasedDate',
+          headerName: "Purchased Date",
+          field: "purchasedDate",
           sortable: true,
           filter: true,
         },
 
         {
-          headerName: 'Price',
-          field: 'price',
+          headerName: "Price",
+          field: "price",
           sortable: true,
           filter: true,
         },
         {
-          headerName: ' Offered Price',
-          field: 'offeredPrice',
+          headerName: " Offered Price",
+          field: "offeredPrice",
           sortable: true,
           filter: true,
         },
         {
-          headerName: 'Expriation Date',
-          field: 'expriationDate',
+          headerName: "Expriation Date",
+          field: "expriationDate",
           sortable: true,
           filter: true,
         },
         {
-          headerName: 'Total Batches',
-          field: 'totalBaches',
+          headerName: "Total Batches",
+          field: "totalBaches",
           sortable: true,
           filter: true,
         },
         {
-          headerName: 'Quantity',
-          field: 'quantity',
+          headerName: "Quantity",
+          field: "quantity",
           sortable: true,
           filter: true,
         },
         {
-          headerName: 'Price per unit/gram',
-          field: 'ppu',
+          headerName: "Price per unit/gram",
+          field: "ppu",
           sortable: true,
           filter: true,
         },
         {
-          headerName: 'Unit Size',
-          field: 'unitSize',
+          headerName: "Unit Size",
+          field: "unitSize",
           sortable: true,
           filter: true,
         },
         {
-          headerName: 'Unit Type',
-          field: 'unitType',
+          headerName: "Unit Type",
+          field: "unitType",
           sortable: true,
           filter: true,
-          cellEditor: 'select',
+          cellEditor: "select",
           cellEditorParams: { values: extractValues(perUnitMappings) },
           filterParams: {
             valueFormatter: function (params) {
@@ -125,76 +126,77 @@ class App extends Component {
         //   filter: true,
         // },
         {
-          headerName: 'Actions',
-          field: 'actions',
-          cellRenderer: 'childMessageRenderer',
-          colId: 'params',
+          headerName: "Actions",
+          field: "actions",
+          cellRenderer: "childMessageRenderer",
+          colId: "params",
           // minWidth: 200,
           sortable: true,
           filter: true,
           editable: false,
         },
         {
-          field: 'BrandActions',
+          field: "Add Brand",
           minWidth: 150,
-          cellRenderer: 'BrandCellRenderer',
+          cellRenderer: "BrandCellRenderer",
           editable: false,
         },
       ],
+  
       context: { componentParent: this },
       getRowNodeId: function (data) {
         return data.uid;
       },
       frameworkComponents: {
         childMessageRenderer: ChildMessageRenderer,
-        BrandCellRenderer: BrandCellRenderer,
+         BrandCellRenderer: BrandCellRenderer,
       },
 
       rowData: [
         {
           uid: uuidv4(),
-          productName: 'Santa Clause X1100',
-          brand: 'Santa Clause',
-          purchasedDate: moment('2010-02-01').valueOf(),
+          productName: "Santa Clause X1100",
+          brand: "Santa Clause",
+          purchasedDate: moment("2010-02-01").valueOf(),
           price: 3500.5,
           offeredPrice: 2500.5,
-          expriationDate: moment('2020-08-01').valueOf(),
-          totalBaches: '4',
-          quantity: '3500',
+          expriationDate: moment("2020-08-01").valueOf(),
+          totalBaches: "4",
+          quantity: "3500",
           ppu: 1250.5,
-          unitSize: '1',
-          unitType: 'unit',
+          unitSize: "1",
+          unitType: "unit",
           // actions: 'edit/delete',
           batchRecord: [
             {
               brandId: uuidv4(),
-              created: moment('2018-06-03').format('MM/DD/YYYY'),
+              created: moment("2018-06-03").format("MM/DD/YYYY"),
 
-              expirationDate: moment('2020-08-01').format('MM/DD/YYYY'),
+              expirationDate: moment("2020-08-01").format("MM/DD/YYYY"),
               quantity: 45,
-              inventory: 'Safe',
-              unitType: 'unit',
+              inventory: "Safe",
+              unitType: "unit",
               vendor: {
-                id: '154654654',
-                name: 'Kishore Kumar',
-                companyName: 'tecHindustan',
-                joined: '<moment date>',
+                id: "154654654",
+                name: "Kishore Kumar",
+                companyName: "tecHindustan",
+                joined: "<moment date>",
               },
               price: 1250.5,
             },
             {
               brandId: uuidv4(),
-              created: moment('2018-06-03').format('MM/DD/YYYY'),
+              created: moment("2018-06-03").format("MM/DD/YYYY"),
 
-              expirationDate: moment('2020-08-01').format('MM/DD/YYYY'),
+              expirationDate: moment("2020-08-01").format("MM/DD/YYYY"),
               quantity: 35,
-              inventory: 'Safe',
-              unitType: 'gram',
+              inventory: "Safe",
+              unitType: "gram",
               vendor: {
-                id: '154654654',
-                name: 'Kishore Kumar',
-                companyName: 'tecHindustan',
-                joined: '<moment date>',
+                id: "154654654",
+                name: "Kishore Kumar",
+                companyName: "tecHindustan",
+                joined: "<moment date>",
               },
               price: 1250.5,
             },
@@ -202,32 +204,32 @@ class App extends Component {
         },
         {
           uid: uuidv4(),
-          productName: 'Banta X1100',
-          brand: 'Banta Clause',
+          productName: "Banta X1100",
+          brand: "Banta Clause",
           purchasedDate: moment().valueOf(),
           price: 3500.5,
           offeredPrice: 2500.5,
           expriationDate: moment().valueOf(),
-          totalBaches: '4',
-          quantity: '3500',
+          totalBaches: "4",
+          quantity: "3500",
           ppu: 1250.5,
-          unitSize: '1',
-          unitType: 'unit',
+          unitSize: "1",
+          unitType: "unit",
           // actions: 'edit/delete',
           batchRecord: [
             {
               brandId: uuidv4(),
-              created: moment('2019-06-03').format('MM/DD/YYYY'),
+              created: moment("2019-06-03").format("MM/DD/YYYY"),
 
-              expirationDate: moment('2021-06-03').format('MM/DD/YYYY'),
+              expirationDate: moment("2021-06-03").format("MM/DD/YYYY"),
               quantity: 45,
-              inventory: 'Safe',
-              unitType: 'unit',
+              inventory: "Safe",
+              unitType: "unit",
               vendor: {
-                id: '154654654',
-                name: 'Kishore Kumar',
-                companyName: 'tecHindustan',
-                joined: '<moment date>',
+                id: "154654654",
+                name: "Kishore Kumar",
+                companyName: "tecHindustan",
+                joined: "<moment date>",
               },
               price: 1250.5,
             },
@@ -235,32 +237,32 @@ class App extends Component {
         },
         {
           uid: uuidv4(),
-          productName: 'xyz',
-          brand: 'nike',
+          productName: "xyz",
+          brand: "nike",
           purchasedDate: moment().valueOf(),
           price: 3500.5,
           offeredPrice: 2500.5,
           expriationDate: moment().valueOf(),
-          totalBaches: '4',
-          quantity: '2500',
+          totalBaches: "4",
+          quantity: "2500",
           ppu: 150.5,
-          unitSize: '2',
-          unitType: 'gram',
+          unitSize: "2",
+          unitType: "gram",
           // actions: 'edit/delete',
           batchRecord: [
             {
               brandId: uuidv4(),
-              created: moment('2020-06-03').format('MM/DD/YYYY'),
+              created: moment("2020-06-03").format("MM/DD/YYYY"),
 
-              expirationDate: moment('2022-06-03').format('MM/DD/YYYY'),
+              expirationDate: moment("2022-06-03").format("MM/DD/YYYY"),
               quantity: 45,
-              inventory: 'Safe',
-              unitType: 'unit',
+              inventory: "Safe",
+              unitType: "unit",
               vendor: {
-                id: '154654654',
-                name: 'Kishore Kumar',
-                companyName: 'tecHindustan',
-                joined: '<moment date>',
+                id: "154654654",
+                name: "Kishore Kumar",
+                companyName: "tecHindustan",
+                joined: "<moment date>",
               },
               price: 1250.5,
             },
@@ -268,17 +270,17 @@ class App extends Component {
         },
         {
           uid: uuidv4(),
-          productName: 'abc',
-          brand: 'pumma',
+          productName: "abc",
+          brand: "pumma",
           purchasedDate: moment().valueOf(),
           price: 2500.5,
           offeredPrice: 2500.5,
           expriationDate: moment().valueOf(),
-          totalBaches: '4',
-          quantity: '3800',
+          totalBaches: "4",
+          quantity: "3800",
           ppu: 1250.5,
-          unitSize: '4',
-          unitType: 'gram',
+          unitSize: "4",
+          unitType: "gram",
           // actions: 'edit/delete',
           batchRecord: [],
         },
@@ -290,40 +292,42 @@ class App extends Component {
         filter: true,
         sortable: true,
         resizable: true,
-        editable: true,
+         editable: true,
+         tooltipComponent: 'customTooltip',
+
       },
 
-      editType: 'fullRow',
+      editType: "fullRow",
 
-      rowSelection: 'single',
+      rowSelection: "single",
 
       detailCellRendererParams: {
         detailGridOptions: {
           frameworkComponents: {
-            // BrandCellRenderer: BrandCellRenderer,
+            BrandCellRenderer2: BrandCellRenderer2,
           },
-          // context: { componentParent: this },
+           context: { componentParent: this },
 
           columnDefs: [
             {
-              field: 'brandId',
+              field: "brandId",
               editable: false,
             },
-            { field: 'created' },
+            { field: "created" },
             {
-              field: 'expirationDate',
+              field: "expirationDate",
               minWidth: 150,
             },
             {
-              field: 'quantity',
+              field: "quantity",
             },
             {
-              field: 'inventory',
+              field: "inventory",
               minWidth: 150,
             },
             {
-              field: 'unitType',
-              cellEditor: 'select',
+              field: "unitType",
+              cellEditor: "select",
               cellEditorParams: { values: extractValues(perUnitMappings) },
               filterParams: {
                 valueFormatter: function (params) {
@@ -339,24 +343,28 @@ class App extends Component {
             },
 
             {
-              field: 'vendor',
-              valueFormatter: vendorFormatter,
+              field: "vendor",
+              valueFormatter: (({ value }) => value && value.companyName || ''),
               resizable: true,
             },
 
-            { field: 'price' },
-
-            // {
-            //   field: 'actions',
-            //   cellRenderer: 'childMessageRenderer',
-            //   colId: 'params',
-            // },
+            { field: "price" },
+            {
+              field: "BrandActions",
+              minWidth: 150,
+              editable: false,
+              cellRenderer: "BrandCellRenderer2",
+            },
           ],
-          defaultColDef: { flex: 1, editable: true, minWidth: 150 },
+
+      editType: "fullRow",
+
+      rowSelection: "single",
+          defaultColDef: { flex: 1, editable: true, minWidth: 150, },
         },
 
         getDetailRowData: function (params) {
-          console.log(params.data.batchRecord, 'params.data.batchRecord');
+         // console.log(params.data.batchRecord, "params.data.batchRecord");
           params.successCallback(params.data.batchRecord);
         },
       },
@@ -370,12 +378,13 @@ class App extends Component {
   addItems = () => {
     var newItems = [createNewRowData()];
     var res = this.gridApi.applyTransaction({ add: newItems });
-    console.log(res, 'additem');
+    
   };
 
   addItemsNew = () => {
     var newItems = [createNewRowData2()];
     var res = this.gridApi.applyTransaction({ add: newItems });
+
   };
 
   onRemoveSelected = () => {
@@ -387,7 +396,7 @@ class App extends Component {
     // this.setState({ rowData: newRowData });
 
     var selectedData = this.gridApi.getSelectedRows();
-    console.log(selectedData, 'res dddelete');
+   // console.log(selectedData, "res dddelete");
     var res = this.gridApi.applyTransaction({ remove: selectedData });
   };
 
@@ -398,18 +407,16 @@ class App extends Component {
   methodFromParent = (cell) => {
     var selectedData = this.gridApi.getSelectedRows();
     var res = this.gridApi.applyTransaction({ remove: selectedData });
-    alert('Parent Component Method from delete  ' + cell + '!');
+    alert("Parent Component Method from delete  " + cell + "!");
   };
 
   methodFromParent2 = (indx) => {
-    this.gridApi.setFocusedCell(indx, 'uid');
+    this.gridApi.setFocusedCell(indx, "uid");
     this.gridApi.startEditingCell({
       rowIndex: indx,
-      colKey: 'uid',
+      colKey: "uid",
     });
   };
-
-
 
   methodFromParent3 = () => {
     var itemsToUpdate = [];
@@ -421,9 +428,57 @@ class App extends Component {
       this.gridApi.stopEditing();
     });
 
-    alert('updated !');
+    alert("updated !");
   };
 
+  methodFromParent4 = (id) => {
+    var selectedRows = this.gridApi.getSelectedNodes();
+    if (!selectedRows || selectedRows.length === 0) {
+      return;
+    }
+    var selectedRow = selectedRows[0];
+    let oldData= selectedRow.data
+       let  newData =oldData.batchRecord
+       if(!newData || newData.length===0){
+         return;
+       }
+       let newBatchRecord =newData.filter(brand=>brand.brandId !==id)
+      // console.log(newBatchRecord,'newBatch re')
+       var finalData = {
+        uid: oldData.uid,
+        productName: oldData.productName,
+        brand: oldData.brand,
+        purchasedDate: oldData.purchasedDate,
+        price: oldData.price,
+        offeredPrice: oldData.offeredPrice,
+        expriationDate: oldData.expriationDate,
+        totalBaches: oldData.totalBaches,
+        quantity: oldData.quantity,
+        ppu: oldData.ppu,
+        unitSize: oldData.unitSize,
+        unitType: oldData.unitType,
+        batchRecord: newBatchRecord,
+      };
+     let res= this.gridApi.applyTransaction({
+        update: [finalData],
+      });
+       console.log(newData,'newData')
+       console.log(oldData,'oldData')
+       console.log(res,'res deleted')
+
+    // this.gridApi.forEachNode(node=>console.log(node,'nodee'))
+  //   var selectedRows = this.gridApi.getSelectedRows();
+  // //  var res = this.props.api.applyTransaction({ remove: selectedData });
+  //      let newArr= selectedRows && selectedRows.length>0 && selectedRows.map(data=>{
+  //         data.batchRecord.filter(brand=> console.log(brand.brandId ===id,'b'))
+  //       })
+  //   console.log(selectedRows.length>0 && selectedRows,'selected row')
+  //   console.log(this.gridApi,'newArr id inside metehond')
+
+   
+  };
+
+  
   //   methodFromParent4 = () => {
   //     var itemsToUpdate = [];
   //     // this.gridApi.forEachNodeAfterFilterAndSort(function (rowNode, index) {
@@ -443,8 +498,8 @@ class App extends Component {
       <div
         className='ag-theme-alpine'
         style={{
-          height: '600px',
-          width: '100%',
+          height: "600px",
+          width: "100%",
         }}
       >
         <div className=' d-flex justify-content-between pt-4'>
@@ -501,115 +556,107 @@ class App extends Component {
           isRowMaster={this.state.isRowMaster}
           autoGroupColumnDef={this.state.autoGroupColumnDef}
           groupSelectsChildren={true}
+          suppressClickEdit={true}
+          // stopEditingWhenGridLosesFocus={true}
+          // treeData={true}
+          // animateRows={true}
+
+
         ></AgGridReact>
       </div>
     );
   }
 }
 
-  function createNewRowData() {
-    var newData = {
-      uid: uuidv4(),
-      productName: 'Santa Clause X1100',
-      brand: 'Santa Clause',
-      purchasedDate: moment('2010-02-01').valueOf(),
-      price: 3500.5,
-      offeredPrice: 2500.5,
-      expriationDate: moment('2020-08-01').valueOf(),
-      totalBaches: '4',
-      quantity: '3500',
-      ppu: 1250.5,
-      unitSize: '1',
-      unitType: 'unit',
-      // actions: 'edit/delete',
-      batchRecord: [
-        {
-          brandId: uuidv4(),
-          created: moment('2018-06-03').format('MM/DD/YYYY'),
+function createNewRowData() {
+  var newData = {
+    uid: uuidv4(),
+    productName: "Santa Clause X1100",
+    brand: "Santa Clause",
+    purchasedDate: moment("2010-02-01").valueOf(),
+    price: 3500.5,
+    offeredPrice: 2500.5,
+    expriationDate: moment("2020-08-01").valueOf(),
+    totalBaches: "4",
+    quantity: "3500",
+    ppu: 1250.5,
+    unitSize: "1",
+    unitType: "unit",
+    // actions: 'edit/delete',
+    batchRecord: [
+      {
+        brandId: uuidv4(),
+        created: moment("2018-06-03").format("MM/DD/YYYY"),
 
-          expirationDate: moment('2020-08-01').format('MM/DD/YYYY'),
-          quantity: 45,
-          inventory: 'Safe',
-          unitType: 'unit',
-          vendor: {
-            id: '154654654',
-            name: 'Kishore Kumar',
-            companyName: 'tecHindustan',
-            joined: '<moment date>'
-          },
-          price: 1250.5
-        }
-      ]
-    };
-    return newData;
-  }
-
-
-
-  function createNewRowData2() {
-    var newData = {
-      uid: uuidv4(),
-      productName: '',
-      brand: '',
-      purchasedDate: '',
-      price: '',
-      offeredPrice: '',
-      expriationDate: '',
-      totalBaches: '',
-      quantity: '',
-      ppu: '',
-      unitSize: '',
-      unitType: '',
-      // actions: 'edit/delete',
-      batchRecord: [
-        {
-          brandId: uuidv4(),
-          created: '',
-
-          expirationDate: '',
-          quantity: '',
-          inventory: '',
-          unitType: '',
-          vendor: {
-            id: '',
-            name: '',
-            companyName: '',
-            joined: '',
-          },
-          price: '',
+        expirationDate: moment("2020-08-01").format("MM/DD/YYYY"),
+        quantity: 45,
+        inventory: "Safe",
+        unitType: "unit",
+        vendor: {
+          id: "154654654",
+          name: "Kishore Kumar",
+          companyName: "tecHindustan",
+          joined: "<moment date>",
         },
-      ],
-    };
-    return newData;
-  }
-
-  function extractValues(mappings) {
-    return Object.keys(mappings);
-  }
-  function lookupValue(mappings, key) {
-    return mappings[key];
-  }
-
-  function lookupKey(mappings, name) {
-    var keys = Object.keys(mappings);
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      if (mappings[key] === name) {
-        return key;
-      }
-    }
-  }
-
-
-function vendorFormatter(params) {
-  console.log(params, 'ppppppp');
-  return ` id:${params.value.id}
- name:${params.value.name}
- companyName:${params.value.companyName}
-joined:${params.value.joined}
- `;
+        price: 1250.5,
+      },
+    ],
+  };
+  return newData;
 }
 
+function createNewRowData2() {
+  var newData = {
+    uid: uuidv4(),
+    productName: "",
+    brand: "",
+    purchasedDate: "",
+    price: "",
+    offeredPrice: "",
+    expriationDate: "",
+    totalBaches: "",
+    quantity: "",
+    ppu: "",
+    unitSize: "",
+    unitType: "",
+    // actions: 'edit/delete',
+    batchRecord: [
+      {
+        brandId: uuidv4(),
+        created: "",
 
-  
+        expirationDate: "",
+        quantity: "",
+        inventory: "",
+        unitType: "",
+        vendor: {
+          id: "",
+          name: "",
+          companyName: "",
+          joined: "",
+        },
+        price: "",
+      },
+    ],
+  };
+  return newData;
+}
+
+function extractValues(mappings) {
+  return Object.keys(mappings);
+}
+function lookupValue(mappings, key) {
+  return mappings[key];
+}
+
+function lookupKey(mappings, name) {
+  var keys = Object.keys(mappings);
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (mappings[key] === name) {
+      return key;
+    }
+  }
+}
+
 export default App;

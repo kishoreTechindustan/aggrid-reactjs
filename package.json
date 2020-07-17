@@ -11,6 +11,7 @@
     "ag-grid-enterprise": "^23.2.1",
     "ag-grid-react": "^23.2.1",
     "bootstrap": "^4.5.0",
+    "chokidar": "^3.4.1",
     "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.1.1",
