@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import ModalDemo from './ModalDemo'
 export default class ChildMessageRenderer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       toggle: false,
-      dis:true
+     data:[],
     };
   }
 
@@ -21,18 +22,33 @@ export default class ChildMessageRenderer extends Component {
 
   onBtStartEditing = () => {
     this.setState({ toggle: true });
-    //console.log(this.props, "edit but");
-    this.props.context.componentParent.methodFromParent2(
-      this.props.node.rowIndex
-    );
+    let {data} =this.props.node;
+     this.setState({data})
+
+    // this.props.context.componentParent.methodFromParent2(
+    //   this.props.node.rowIndex
+    // );
     
   };
 
-  onBtStopEditing = () => {
-    this.props.context.componentParent.methodFromParent3();
+  onBtStopEditing = (products) => {
+    let itemsToUpdate=[]
+    //console.log(products,'ppppp')
+   // this.props.context.componentParent.methodFromParent3();
+
+    this.props.api.forEachNode((rowNode) => {
+      let data = rowNode.data;
+      itemsToUpdate.push(products);
+      var res = this.props.api.applyTransaction({ update: itemsToUpdate });
+     console.log(res,'ress uppppdd')
+    });
+
     this.setState({ toggle: false });
   };
-
+    
+  toggleOff=()=>{
+    this.setState({toggle:false})
+  }
   //  updateItems = () => {
   //      this.props.context.componentParent.methodFromParent4();
   // //    var itemsToUpdate = [];
@@ -55,13 +71,13 @@ export default class ChildMessageRenderer extends Component {
 
   render() {
     return (
-      <span>
+      <div>
         {this.state.toggle ? (
-          <button className='btn btn-success ' onClick={this.onBtStopEditing}>
+          <button className='btn btn-success ' onClick={()=>this.onBtStopEditing()}>
             <i className='fa fa-check  '></i>
           </button>
         ) : (
-             <button className='btn btn-warning ' onClick={this.onBtStartEditing}  >
+             <button className='btn btn-warning ' onClick={()=> this.onBtStartEditing()}  >
             <i className='fa fa-pencil  '></i>
           </button>
         )}
@@ -75,7 +91,8 @@ export default class ChildMessageRenderer extends Component {
             <i className='fa fa-trash' aria-hidden='true'></i>
           </button>
         )}
-      </span>
+        {this.state.toggle ? <ModalDemo show={true} data={this.state.data} onBtStopEditing={this.onBtStopEditing} toggleOff={this.toggleOff}/> :''}
+      </div>
     );
   }
 }

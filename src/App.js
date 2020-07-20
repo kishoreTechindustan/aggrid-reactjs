@@ -12,6 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 //import CustomTooltip from './components/common/CustomTooltip'
 // import CustomBrandCellRenderer from './components/common/CustomBrandCellRenderer'
+
 var moment = require("moment");
 
 var perUnitMappings = {
@@ -43,27 +44,25 @@ class App extends Component {
           field: "productName",
           sortable: true,
           filter: true,
-          valueGetter: function (params) {
-            return params.data.productName;
-          },
-          valueSetter: function (params) {
-            let data = params.data;
-            let changedVal=params.newValue
+          // valueGetter: function (params) {
+          //   return params.data.productName;
+          // },
+          // valueSetter: function (params) {
+          //   let data = params.data;
+          //   let changedVal=params.newValue
 
-            if (data.productName !== changedVal) {
-              if(!changedVal){
-                toast.error('Product Name Cant Empty')
-                return  false
-              }
-             data.productName= changedVal
-             return true
-            }else {
-              return false
-            }
-          },
+          //   if (data.productName !== changedVal) {
+          //     if(!changedVal){
+          //       toast.error('Product Name Cant Empty')
+          //       return  false
+          //     }
+          //    data.productName= changedVal
+          //    return true
+          //   }
+          // },
+
           // tooltipField: "productName",
-        },
-        ,
+        } ,
         {
           headerName: "Brand",
           field: "brand",
@@ -423,34 +422,33 @@ class App extends Component {
     alert("Parent Component Method from delete  " + cell + "!");
   };
 
-  methodFromParent2 = (indx) => {
-    this.gridApi.setFocusedCell(indx, "uid");
-    this.gridApi.startEditingCell({
-      rowIndex: indx,
-      colKey: "uid",
-    });
-  };
+  // methodFromParent2 = (indx) => {
+  //   this.gridApi.setFocusedCell(indx, "uid");
+  //   this.gridApi.startEditingCell({
+  //     rowIndex: indx,
+  //     colKey: "uid",
+  //   });
+  // };
 
-  methodFromParent3 = () => {
-    var itemsToUpdate = [];
-    // let data = this.gridApi.getSelectedRows();
-    //   if(!data[0].brand) {
-    //     alert('empty bran')
-    //     return
-    //   }
-    // let res = this.gridApi.applyTransaction({ update: data });
-    // this.gridApi.stopEditing();
-    // console.log(res, "upsdate srees");
+  // methodFromParent3 = () => {
+  //   var itemsToUpdate = [];
+  //   // let data = this.gridApi.getSelectedRows();
+  //   //   if(!data[0].brand) {
+  //   //     alert('empty bran')
+  //   //     return
+  //   //   }
+  //   // let res = this.gridApi.applyTransaction({ update: data });
+  //   // this.gridApi.stopEditing();
+  //   // console.log(res, "upsdate srees");
 
-    this.gridApi.forEachNode((rowNode) => {
-      let data = rowNode.data;
-      itemsToUpdate.push(data);
-      var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
-      this.gridApi.stopEditing();
-    });
-    //  console.log(itemsToUpdate,'itemsss')
-    //"d02effa9-ce66-4b1e-a388-0b30fa9910ef"
-  };
+  //   this.gridApi.forEachNode((rowNode) => {
+  //     let data = rowNode.data;
+  //     itemsToUpdate.push(data);
+  //     var res = this.gridApi.applyTransaction({ update: itemsToUpdate });
+  //     this.gridApi.stopEditing();
+  //   });
+
+  // };
 
   methodFromParent4 = (id) => {
     var selectedRows = this.gridApi.getSelectedNodes();
@@ -554,7 +552,7 @@ class App extends Component {
           </div>
         </div>
 
-        <AgGridReact
+         <AgGridReact
           columnDefs={this.state.columnDefs}
           rowData={this.state.rowData}
           defaultColDef={this.state.defaultColDef}
@@ -576,7 +574,7 @@ class App extends Component {
           // treeData={true}
           // animateRows={true}
         ></AgGridReact>
-        <ToastContainer />
+        <ToastContainer /> 
       </div>
     );
   }
