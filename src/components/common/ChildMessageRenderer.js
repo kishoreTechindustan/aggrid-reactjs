@@ -31,7 +31,7 @@ export default class ChildMessageRenderer extends Component {
     
   };
 
-  onBtStopEditing = (products) => {
+  onBtStopEditing = (products, toast) => {
     let itemsToUpdate=[]
     //console.log(products,'ppppp')
    // this.props.context.componentParent.methodFromParent3();
@@ -40,9 +40,10 @@ export default class ChildMessageRenderer extends Component {
       let data = rowNode.data;
       itemsToUpdate.push(products);
       var res = this.props.api.applyTransaction({ update: itemsToUpdate });
-     console.log(res,'ress uppppdd')
+      
+   
     });
-
+    toast.success('Updated !')
     this.setState({ toggle: false });
   };
     

@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import "./App.css";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import "ag-grid-community/dist/styles/ag-theme-material.css";
 import "ag-grid-enterprise";
 import { v4 as uuidv4 } from "uuid";
 import ChildMessageRenderer from "./components/common/ChildMessageRenderer";
 import BrandCellRenderer from "./components/common/BrandCellRenderer";
 import BrandCellRenderer2 from "./components/common/BrandCellRenderer2";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {notification} from './components/common/Notification'
+
+
 //import CustomTooltip from './components/common/CustomTooltip'
 // import CustomBrandCellRenderer from './components/common/CustomBrandCellRenderer'
 
@@ -62,7 +64,7 @@ class App extends Component {
           // },
 
           // tooltipField: "productName",
-        } ,
+        },
         {
           headerName: "Brand",
           field: "brand",
@@ -392,11 +394,15 @@ class App extends Component {
   addItems = () => {
     var newItems = [createNewRowData()];
     var res = this.gridApi.applyTransaction({ add: newItems });
+            notification("info", "Add");
+
   };
 
   addItemsNew = () => {
     var newItems = [createNewRowData2()];
     var res = this.gridApi.applyTransaction({ add: newItems });
+        notification("info", "Add");
+
   };
 
   onRemoveSelected = () => {
@@ -410,16 +416,21 @@ class App extends Component {
     var selectedData = this.gridApi.getSelectedRows();
     // console.log(selectedData, "res dddelete");
     var res = this.gridApi.applyTransaction({ remove: selectedData });
+    notification("success","Deleted")
   };
 
   clearData = () => {
     this.gridApi.setRowData([]);
+    notification("success", "Clear All");
+
   };
 
   methodFromParent = (cell) => {
     var selectedData = this.gridApi.getSelectedRows();
     var res = this.gridApi.applyTransaction({ remove: selectedData });
-    alert("Parent Component Method from delete  " + cell + "!");
+    // alert("Parent Component Method from delete  " + cell + "!");
+   notification("success", "Deleted");
+
   };
 
   // methodFromParent2 = (indx) => {
@@ -509,7 +520,7 @@ class App extends Component {
   render() {
     return (
       <div
-        className='ag-theme-alpine'
+        className='ag-theme-material'
         style={{
           height: "600px",
           width: "100%",
@@ -552,7 +563,7 @@ class App extends Component {
           </div>
         </div>
 
-         <AgGridReact
+        <AgGridReact
           columnDefs={this.state.columnDefs}
           rowData={this.state.rowData}
           defaultColDef={this.state.defaultColDef}
@@ -574,7 +585,7 @@ class App extends Component {
           // treeData={true}
           // animateRows={true}
         ></AgGridReact>
-        <ToastContainer /> 
+        <ToastContainer />
       </div>
     );
   }

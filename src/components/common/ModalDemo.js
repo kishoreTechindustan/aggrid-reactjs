@@ -1,62 +1,71 @@
 import React from "react";
-
 import { Form, Col, Button, Modal } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import validateProduct from "../../validations/product";
+import cn from "classnames";
 
 export default class ReactModal extends React.Component {
-    
   constructor(props) {
-      super(props);
-     let {data} = this.props;
+    super(props);
+    let { data } = this.props;
     this.state = {
       show: this.props.show,
       validated: "false",
-      products: {
-        uid: data && data.uid || '',
-          productName: data && data.productName || '',
-          brand: data && data.brand || '',
-          purchasedDate: data && data.purchasedDate || '',
-          price: data && data.price || '',
-          offeredPrice: data && data.offeredPrice || '',
-          expriationDate: data && data.expriationDate || '',
-          totalBaches: data && data.totalBaches || '',
-          quantity: data && data.quantity || '',
-          ppu: data && data.ppu || '',
-          unitSize: data && data.unitSize || '',
-          unitType: data && data.unitType || '',
-          batchRecord: data && data.batchRecord || '',
+      product: {
+        uid: (data && data.uid) || "",
+        productName: (data && data.productName) || "",
+        brand: (data && data.brand) || "",
+        purchasedDate: (data && data.purchasedDate) || "",
+        price: (data && data.price) || "",
+        offeredPrice: (data && data.offeredPrice) || "",
+        expriationDate: (data && data.expriationDate) || "",
+        totalBaches: (data && data.totalBaches) || "",
+        quantity: (data && data.quantity) || "",
+        ppu: (data && data.ppu) || "",
+        unitSize: (data && data.unitSize) || "",
+        unitType: (data && data.unitType) || "",
+        batchRecord: (data && data.batchRecord) || "",
       },
+      errors: {},
     };
   }
 
   handleShow = () => this.setState({ show: true });
   handleClose = () => {
-      this.setState({ show: false })
-      this.props.toggleOff()
-};
+    this.setState({ show: false });
+    this.props.toggleOff();
+  };
 
   handleChange = (e) => {
-    const products = this.state.products;
+    const product = this.state.product;
     const { name, value } = e.target;
     console.log(name, "name", value, "value");
-    products[name] = value;
-    this.setState({ products });
+    product[name] = value;
+    this.setState({ product });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    //console.log(this.state, "submit");
-    this.props.onBtStopEditing(this.state.products)
+    let { product } = this.state;
+    const { isValid, errors } = validateProduct(product);
+    if (isValid) {
+      this.props.onBtStopEditing(product, toast);
+    } else {
+      this.setState({ errors });
+    }
   };
 
   render() {
-     
+    const { errors = {}, product } = this.state;
+
     return (
       <div>
-        {/* <Button variant='primary' onClick={this.handleShow}>
-          Launch demo modal
-        </Button> */}
-
-            <Modal show={this.state.show} onHide={this.handleClose} size='lg' backdrop="static">
+        <Modal
+          show={this.state.show}
+          onHide={this.handleClose}
+          size='lg'
+          backdrop='static'
+        >
           <Modal.Header closeButton>
             <Modal.Title>Record Update</Modal.Title>
           </Modal.Header>
@@ -70,126 +79,177 @@ export default class ReactModal extends React.Component {
                     name='uid'
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='UID'
-                    value={this.state.products.uid}
+                    value={product.uid}
                     disabled
                   />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId='formGridproductName'>
-                  <Form.Label>productName</Form.Label>
+                  <Form.Label>Product Name</Form.Label>
                   <Form.Control
+                    className={
+                      !product.productName &&
+                      cn({ "input-error": errors.productName })
+                    }
                     name='productName'
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='productName'
-                    value={this.state.products.productName}
+                    value={product.productName}
                   />
+                  {errors && errors.productName && !product.productName && (
+                    <p className='error'>{errors.productName}</p>
+                  )}
                 </Form.Group>
               </Form.Row>
 
               <Form.Row>
                 <Form.Group as={Col} controlId='formGridbrand'>
-                  <Form.Label>brand</Form.Label>
+                  <Form.Label>Brand</Form.Label>
                   <Form.Control
+                    className={
+                      !product.brand && cn({ "input-error": errors.brand })
+                    }
                     name='brand'
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='brand'
-                    value={this.state.products.brand}
+                    value={product.brand}
                   />
+                  {errors && errors.brand && !product.brand && (
+                    <p className='error'>{errors.brand}</p>
+                  )}
                 </Form.Group>
 
                 <Form.Group as={Col} controlId='formGridpurchasedDate'>
-                  <Form.Label>purchasedDate</Form.Label>
+                  <Form.Label>Purchased Date</Form.Label>
                   <Form.Control
+                    className={
+                      !product.purchasedDate &&
+                      cn({ "input-error": errors.purchasedDate })
+                    }
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='purchasedDate'
                     name='purchasedDate'
-                    value={this.state.products.purchasedDate}
+                    value={product.purchasedDate}
                   />
+                  {errors && errors.purchasedDate && !product.purchasedDate && (
+                    <p className='error'>{errors.purchasedDate}</p>
+                  )}
                 </Form.Group>
               </Form.Row>
 
               <Form.Row>
                 <Form.Group as={Col} controlId='formGridprice'>
-                  <Form.Label>price</Form.Label>
+                  <Form.Label>Price</Form.Label>
                   <Form.Control
+                    className={
+                      !product.price &&
+                      cn({ "input-error": errors.price })
+                    }
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='price'
                     name='price'
-                    value={this.state.products.price}
+                    value={product.price}
                   />
+                     {errors && errors.price && !product.price && (
+                    <p className='error'>{errors.price}</p>
+                  )}
                 </Form.Group>
 
                 <Form.Group as={Col} controlId='formGridofferedPrice'>
-                  <Form.Label>offeredPrice</Form.Label>
+                  <Form.Label>Offered Price</Form.Label>
                   <Form.Control
+                    className={
+                      !product.offeredPrice &&
+                      cn({ "input-error": errors.offeredPrice })
+                    }
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='offeredPrice'
                     name='offeredPrice'
-                    value={this.state.products.offeredPrice}
+                    value={product.offeredPrice}
                   />
+                     {errors && errors.offeredPrice && !product.offeredPrice && (
+                    <p className='error'>{errors.offeredPrice}</p>
+                  )}
                 </Form.Group>
               </Form.Row>
 
               <Form.Row>
                 <Form.Group as={Col} controlId='formGridexpriationDate'>
-                  <Form.Label>expriationDate</Form.Label>
+                  <Form.Label>Expriation Date</Form.Label>
                   <Form.Control
+                    className={
+                      !product.expriationDate &&
+                      cn({ "input-error": errors.expriationDate })
+                    }
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='expriationDate'
                     name='expriationDate'
-                    value={this.state.products.expriationDate}
+                    value={product.expriationDate}
                   />
+                     {errors && errors.expriationDate && !product.expriationDate && (
+                    <p className='error'>{errors.expriationDate}</p>
+                  )}
                 </Form.Group>
 
                 <Form.Group as={Col} controlId='formGridtotalBaches'>
-                  <Form.Label>totalBaches</Form.Label>
+                  <Form.Label>Total Batches</Form.Label>
                   <Form.Control
+                    className={
+                      !product.totalBaches &&
+                      cn({ "input-error": errors.totalBaches })
+                    }
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='totalBaches'
                     name='totalBaches'
-                                    value={this.state.products.totalBaches}
+                    value={product.totalBaches}
                   />
+                     {errors && errors.totalBaches && !product.totalBaches && (
+                    <p className='error'>{errors.totalBaches}</p>
+                  )}
                 </Form.Group>
               </Form.Row>
 
               <Form.Row>
                 <Form.Group as={Col} controlId='formGridquantity'>
-                  <Form.Label>quantity</Form.Label>
+                  <Form.Label>Quantity</Form.Label>
                   <Form.Control
+                    className={
+                      !product.productName &&
+                      cn({ "input-error": errors.quantity })
+                    }
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='quantity'
                     name='quantity'
-                    value={this.state.products.quantity}
+                    value={product.quantity}
                   />
+                     {errors && errors.quantity && !product.quantity && (
+                    <p className='error'>{errors.quantity}</p>
+                  )}
                 </Form.Group>
 
                 <Form.Group as={Col} controlId='formGridppu'>
-                                    <Form.Label>Price Per Unit /Gram</Form.Label>
-                                    <Form.Control
-                                        onChange={this.handleChange}
-                                        type='text'
-                                        placeholder='ppu'
-                                        name='ppu'
-                                        value={this.state.products.ppu}
-                                    />
-
-                                </Form.Group>
+                  <Form.Label>Price Per Unit /Gram</Form.Label>
+                  <Form.Control
+                    className={
+                      !product.ppu &&
+                      cn({ "input-error": errors.ppu })
+                    }
+                    onChange={this.handleChange}
+                    type='text'
+                    name='ppu'
+                    value={product.ppu}
+                  />
+                     {errors && errors.ppu && !product.ppu && (
+                    <p className='error'>{errors.ppu}</p>
+                  )}
+                </Form.Group>
 
                 {/* <Form.Group as={Col} controlId='formGridpricePerUnit'>
                   <Form.Label>Price per unit/gram</Form.Label>
                   <Form.Control
                     as='select'
                     name='ppu'
-                    value={this.state.products && this.state.products.ppu}
+                    value={product && product.ppu}
                     onChange={this.handleChange}
                   >
                     <option value='unit'>unit</option>
@@ -200,67 +260,48 @@ export default class ReactModal extends React.Component {
 
               <Form.Row>
                 <Form.Group as={Col} controlId='formGridunitSize'>
-                  <Form.Label>unitSize</Form.Label>
+                  <Form.Label>Unit Size</Form.Label>
                   <Form.Control
+                    className={
+                      !product.unitSize &&
+                      cn({ "input-error": errors.unitSize })
+                    }
                     onChange={this.handleChange}
                     type='text'
-                    placeholder='unitSize'
                     name='unitSize'
-                    value={this.state.products.unitSize}
+                    value={product.unitSize}
                   />
+                    {errors && errors.unitSize && !product.unitSize && (
+                    <p className='error'>{errors.unitSize}</p>
+                  )}
                 </Form.Group>
-                            <Form.Group as={Col} controlId='formGridpricePerUnit'>
-                                <Form.Label>unitType</Form.Label>
-                                <Form.Control
-                                    as='select'
-                                    name='unitType'
-                                    value={this.state.products && this.state.products.unitType}
-                                    onChange={this.handleChange}
-                                >
-                                    <option value='unit'>unit</option>
-                                    <option value='gram'>gram</option>
-                                </Form.Control>
-                            </Form.Group>
-{/* 
-                <Form.Group as={Col} controlId='formGridunitType'>
-                  <Form.Label>unitType</Form.Label>
+                <Form.Group as={Col} controlId='formGridpricePerUnit'>
+                  <Form.Label>Unit Type</Form.Label>
                   <Form.Control
-                    onChange={this.handleChange}
-                    type='text'
-                    placeholder='unitType'
+                    className={
+                      !product.unitType &&
+                      cn({ "input-error": errors.unitType })
+                    }
+                    as='select'
                     name='unitType'
-                    value={this.state.products.unitType}
-                  />
-                </Form.Group> */}
-
-
+                    value={product && product.unitType}
+                    onChange={this.handleChange}
+                  >
+                    <option value='unit'>unit</option>
+                    <option value='gram'>gram</option>
+                  </Form.Control>
+                    {errors && errors.unitType && !product.unitType && (
+                    <p className='error'>{errors.unitType}</p>
+                  )}
+                </Form.Group>
               </Form.Row>
-
-              {/* <Form.Row>
-                               <Form.Group as={Col} controlId='formGridprice'>
-                                 <Form.Label>State</Form.Label>
-                                 <Form.Control as='select' value='Choose...'>
-                                   <option>Choose...</option>
-                                   <option>...</option>
-                                 </Form.Control>
-                               </Form.Group>
-                               <Form.Group as={Col} controlId='formGridZip'>
-                                 <Form.Label>Zip</Form.Label>
-                                 <Form.Control />
-                               </Form.Group>
-                             </Form.Row> */}
-
-              <Button
-                variant='primary'
-                type='submit'
-                onClick={this.handleSubmit}
-              >
-                Submit
-              </Button>
             </Form>
           </Modal.Body>
 
           <Modal.Footer>
+            <Button variant='primary' type='submit' onClick={this.handleSubmit}>
+              Submit
+            </Button>
             <Button variant='secondary' onClick={this.handleClose}>
               Close
             </Button>

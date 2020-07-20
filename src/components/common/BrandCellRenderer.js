@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {notification} from './Notification'
 import { v4 as uuidv4 } from "uuid";
 var moment = require("moment");
 
@@ -61,7 +62,8 @@ export default class BrandCellRenderer extends Component {
     });
     this.props.node.setExpanded(true);
 
-    alert("add");
+   notification("info", "Add Row");
+;
   }
 
   // onRemove() {
